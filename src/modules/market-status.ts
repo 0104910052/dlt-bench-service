@@ -1,6 +1,6 @@
 import axios from "axios";
 import { config } from "../config/system";
-import env from "../system/load-env-data";
+import env from "../../utils/load-env-data";
 import {
   MarketStatusResponseData,
   NetworkMarketStatus,

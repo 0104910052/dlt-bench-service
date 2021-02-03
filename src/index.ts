@@ -1,7 +1,9 @@
-import { fetchBlockchainData } from "./modules/blockchain";
-import { fetchMarketData } from "./modules/market-status";
-import { initServer } from "./system/server";
+import { initServer } from './system/server';
+import './system/jobs/fetch-scheduler';
 
-initServer();
-fetchBlockchainData();
-fetchMarketData();
+const bootstrapServer = async () => {
+  initServer();
+};
+
+bootstrapServer();
+

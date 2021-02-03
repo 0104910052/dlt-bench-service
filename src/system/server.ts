@@ -1,21 +1,27 @@
-import WebSocket from "ws";
-import { loadEnvData } from "./load-env-data";
-import env from "./load-env-data";
+import { loadEnvData } from '../../utils/load-env-data';
+import env from '../../utils/load-env-data';
+import { Server, Socket } from 'socket.io';
+import { config } from '../config/system';
+import { data } from '../state/store';
 
-export const initServer = () => {};
+export const initServer = () => {
+  initWs();
+};
 
-const initWss = () => {
-  const wss = new WebSocket.Server({
-    port: 8080,
-  });
+const initWs = () => {
+  const io = new Server(8081, { cors: { origin: '*' } });
 
-  wss.on("connection", (ws) => {
-    ws.on("message", (message) => {
-      console.log("received: %s", message);
+  io.on('connect', (socket: Socket) => {
+    console.log(`connect ${socket.id}`.gray);
+
+    socket.on('disconnect', () => {
+      console.log(`disconnect ${socket.id}`);
     });
-
-    ws.send("something");
   });
 
-  return wss;
+  setInterval(() => {
+    io.emit('post_network_data', data);
+  }, config.pingInterval);
+
+  console.log('Socket emmiter online'.bgGreen.black);
 };
